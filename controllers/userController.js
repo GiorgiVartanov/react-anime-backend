@@ -194,7 +194,7 @@ const deleteUser = asyncHandler(async (req, res) => {
   const user = req.user
   const { id } = req.params // user can be deleted by either id or username
 
-  const currentUser = await User.findOne({ _id: user })
+  const currentUser = await User.findOne({ _id: user._id })
 
   if (currentUser.accountType !== "Admin") {
     res.status(400)
@@ -205,7 +205,9 @@ const deleteUser = asyncHandler(async (req, res) => {
 
   let userToDelete
 
-  if (isValidId(id)) userToDelete = await User.fineOne({ _id: id })
+  console.log(id)
+
+  if (isValidId(id)) userToDelete = await User.findById(id)
   else userToDelete = await User.findOne({ username: id })
 
   if (userToDelete._id === user._id) {
