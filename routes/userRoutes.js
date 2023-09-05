@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 
 const {
+  searchForUser,
   getUser,
   getAllUsers,
   getUserFriends,
@@ -14,6 +15,7 @@ const {
 
 const { protect } = require("../middleware/authMiddleware")
 
+router.get("/search", searchForUser)
 router.get("/all", protect, getAllUsers)
 router.get("/:username", getUser)
 router.get("/:username/friends", getUserFriends)

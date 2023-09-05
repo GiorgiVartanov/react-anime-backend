@@ -12,6 +12,18 @@ const Comment = require("../models/commentModel")
 const Friendship = require("../models/friendshipModel")
 const Vote = require("../models/voteModel")
 
+const searchForUser = asyncHandler(async (req, res) => {
+  const { q } = req.query
+
+  const users = await User.find({ username: { $regex: q, $options: "i" } })
+
+  const usersToSend = users.map((user) => ({
+    username: user.username,
+  }))
+
+  res.status(200).json({ data: usersToSend })
+})
+
 const getUser = asyncHandler(async (req, res) => {
   const { username } = req.params
 
@@ -337,6 +349,7 @@ const demoteUser = asyncHandler(async (req, res) => {
 })
 
 module.exports = {
+  searchForUser,
   getUser,
   getAllUsers,
   getUserFriends,
