@@ -11,6 +11,7 @@ const Favorite = require("../models/favoriteModel")
 const Comment = require("../models/commentModel")
 const Friendship = require("../models/friendshipModel")
 const Vote = require("../models/voteModel")
+const Image = require("../models/ImageModel")
 
 const searchForUser = asyncHandler(async (req, res) => {
   const { q } = req.query
@@ -348,6 +349,33 @@ const demoteUser = asyncHandler(async (req, res) => {
   res.status(200).json(userDemotion)
 })
 
+const changeProfilePicture = asyncHandler(async (req, res) => {
+  const file = req.file
+  const user = req.user
+
+  Image.deleteOne({ _id: user._id })
+
+  const response = await Image.create({
+    user: user._id,
+    imageName: file.originalname,
+    image: {
+      data: file.buffer,
+    },
+  })
+
+  res.status(200).json({ response })
+})
+
+const getProfilePicture = asyncHandler(async (req, res) => {
+  const { username } = req.params
+
+  const user = await User.findOne({ username: username })
+
+  const profilePicture = await Image.findOne({ user: user })
+
+  res.status(200).json({ profilePicture })
+})
+
 module.exports = {
   searchForUser,
   getUser,
@@ -358,4 +386,6 @@ module.exports = {
   deleteUser,
   promoteUser,
   demoteUser,
+  changeProfilePicture,
+  getProfilePicture,
 }

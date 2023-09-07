@@ -176,7 +176,7 @@ const changeCredentials = asyncHandler(async (req, res) => {
 
     if (newUsername.length > 20) {
       res.status(400)
-      throw new Error("This Email is now valid")
+      throw new Error("This Username is now valid")
     }
 
     const updatedUser = await User.updateOne(
@@ -190,7 +190,7 @@ const changeCredentials = asyncHandler(async (req, res) => {
     }
   }
 
-  const updatedUser = await User.find({ _id: user.id })
+  const updatedUser = await User.findOne({ _id: user.id })
 
   res.status(200).json({
     user: {
