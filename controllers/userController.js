@@ -353,7 +353,12 @@ const changeProfilePicture = asyncHandler(async (req, res) => {
   const file = req.file
   const user = req.user
 
-  Image.deleteOne({ _id: user._id })
+  if (!file) {
+    res.status(400)
+    throw new Error("file was not provided")
+  }
+
+  await Image.deleteOne({ user: user })
 
   const response = await Image.create({
     user: user._id,
@@ -373,7 +378,16 @@ const getProfilePicture = asyncHandler(async (req, res) => {
 
   const profilePicture = await Image.findOne({ user: user })
 
-  res.status(200).json({ profilePicture })
+  if (!profilePicture) {
+    res.status(400)
+    throw new Error("this user does not have image")
+  }
+
+  const buffer = profilePicture.image.data
+
+  const imageInBase64 = buffer.toString("base64")
+
+  res.status(200).json({ data: imageInBase64 })
 })
 
 module.exports = {
