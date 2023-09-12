@@ -147,7 +147,7 @@ const changeCredentials = asyncHandler(async (req, res) => {
 
     if (!emailRegex.test(newEmail)) {
       res.status(400)
-      throw new Error("This Email is now valid")
+      throw new Error("This Email is not valid")
     }
 
     const updatedUser = await User.updateOne(

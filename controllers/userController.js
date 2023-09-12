@@ -86,6 +86,8 @@ const getUser = asyncHandler(async (req, res) => {
 })
 
 const getAllUsers = asyncHandler(async (req, res) => {
+  const { q } = req.query
+
   const user = req.user
 
   if (user.accountType !== "Admin") {
@@ -95,7 +97,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
     )
   }
 
-  const users = await User.find()
+  const users = await User.find({ username: { $regex: q, $options: "i" } })
 
   const usersData = users.map((user) => ({
     _id: user._id,
@@ -368,7 +370,11 @@ const changeProfilePicture = asyncHandler(async (req, res) => {
     },
   })
 
-  res.status(200).json({ response })
+  const buffer = file.buffer
+
+  const imageInBase64 = buffer.toString("base64")
+
+  res.status(200).json({ data: imageInBase64 })
 })
 
 const getProfilePicture = asyncHandler(async (req, res) => {
@@ -379,15 +385,16 @@ const getProfilePicture = asyncHandler(async (req, res) => {
   const profilePicture = await Image.findOne({ user: user })
 
   if (!profilePicture) {
-    res.status(400)
-    throw new Error("this user does not have image")
+    res
+      .status(200)
+      .json({ message: "this user does not have profile picture yet" })
+  } else {
+    const buffer = profilePicture.image.data
+
+    const imageInBase64 = buffer.toString("base64")
+
+    res.status(200).json({ data: imageInBase64 })
   }
-
-  const buffer = profilePicture.image.data
-
-  const imageInBase64 = buffer.toString("base64")
-
-  res.status(200).json({ data: imageInBase64 })
 })
 
 module.exports = {
