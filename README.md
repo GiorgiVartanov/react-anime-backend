@@ -75,6 +75,7 @@
 - <a href="https://react.dev"> express-async-handler </a> <span style="opacity: 0.5;"> - Middleware for express that simplifies error handling </span>
 - <a href="https://react.dev"> jsonwebtoken </a> <span style="opacity: 0.5;"> - library for generating JWT (JSON Web Token) </span>
 - <a href="https://react.dev"> mongoose </a> <span style="opacity: 0.5;"> - library for interacting with MongoDB </span>
+- <a href="https://react.dev"> express-rate-limit </a> <span style="opacity: 0.5;"> - library for Rate Limiting </span>
 - <a href="https://react.dev"> multer </a> <span style="opacity: 0.5;"> - middleware for multipart/form-data </span>
 - <a href="https://react.dev"> nodemon </a> <span style="opacity: 0.5;"> - Utility library that automatically restarts server when changes are made </span> <span style="opacity: 0.25;"> DEV </span>
 

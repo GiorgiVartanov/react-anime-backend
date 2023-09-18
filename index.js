@@ -1,5 +1,6 @@
 const express = require("express")
 const cors = require("cors")
+const rateLimit = require("express-rate-limit")
 
 const { errorHandler } = require("./middleware/errorMiddleware")
 const connectDB = require("./config/db")
@@ -22,6 +23,14 @@ const corsOptions = {
 }
 
 app.use(cors(corsOptions))
+
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 1000,
+  message: "Too many request from this IP",
+})
+
+app.use(limiter)
 
 app.use("/api/auth", require("./routes/authRoutes"))
 app.use("/api/anime", require("./routes/animeRoutes"))

@@ -1,5 +1,6 @@
 const url = require("url")
 const asyncHandler = require("express-async-handler")
+const rateLimit = require("express-rate-limit")
 
 const calculateTime = require("../utils/calculateTime")
 
@@ -138,7 +139,7 @@ const getCommentsForAnimeForLoggedInUser = asyncHandler(async (req, res) => {
   res.status(200).json({ data })
 })
 
-const vote = asyncHandler(async (req, res) => {
+const vote = asyncHandler(async (req, res, next) => {
   const { id, voteType } = req.body
 
   const comment = await Comment.findById(id)
