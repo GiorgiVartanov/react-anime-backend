@@ -37,6 +37,7 @@ app.use("/api/anime", require("./routes/animeRoutes"))
 app.use("/api/user", require("./routes/userRoutes"))
 app.use("/api/comments", require("./routes/commentRoutes"))
 app.use("/api/favorite", require("./routes/favoriteRoutes"))
+app.use("/api/quote", require("./routes/quoteRoutes"))
 
 app.use(errorHandler)
 
