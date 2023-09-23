@@ -1,4 +1,5 @@
 const url = require("url")
+const axios = require("axios")
 const asyncHandler = require("express-async-handler")
 
 const getGenres = asyncHandler(async (req, res) => {
@@ -97,7 +98,18 @@ const getRandomAnimeId = asyncHandler(async (req, res) => {
   res.status(200).json({ data: randomAnimeId })
 })
 
+const getAnimeCoverImage = asyncHandler(async (req, res) => {
+  const { mal_id } = req.params
+
+  const response = await axios.get(`https://kitsu.io/api/edge/anime/${mal_id}`)
+
+  const data = response.data.data.attributes.coverImage
+
+  res.status(200).json({ data })
+})
+
 module.exports = {
   getGenres,
   getRandomAnimeId,
+  getAnimeCoverImage,
 }

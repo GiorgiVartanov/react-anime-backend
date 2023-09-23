@@ -22,9 +22,16 @@ const getQuote = asyncHandler(async (req, res) => {
     throw new Error("something went wrong")
   }
 
-  const animeFromQuote = await axios.get(
-    `https://api.jikan.moe/v4/anime/${randomQuote.mal_id}`
-  )
+  let animeFromQuote
+
+  try {
+    animeFromQuote = await axios.get(
+      `https://api.jikan.moe/v4/anime/${randomQuote.mal_id}`
+    )
+  } catch (error) {
+    res.status(error.response.status)
+    throw new Error(error.response.statusText)
+  }
 
   if (!animeFromQuote) {
     res.status(400)
@@ -34,7 +41,9 @@ const getQuote = asyncHandler(async (req, res) => {
   const data = {
     text: randomQuote.text,
     author: randomQuote.author,
-    anime: animeFromQuote.data.data,
+    title: animeFromQuote.data.data.title,
+    mal_id: randomQuote.mal_id,
+    images: animeFromQuote.data.data.images,
   }
 
   res.status(200).json({ data })

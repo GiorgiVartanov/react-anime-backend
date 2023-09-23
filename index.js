@@ -25,7 +25,7 @@ const corsOptions = {
 app.use(cors(corsOptions))
 
 const limiter = rateLimit({
-  max: 100,
+  max: 1000,
   windowMs: 60 * 1000,
   message: "Too many request from this IP",
 })
